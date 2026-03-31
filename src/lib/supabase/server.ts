@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { Database } from "@/types/supabase"; // Путь к твоему файлу с типами
+import { Database } from "@/types/supabase";
 
 if (!process.env.SUPABASE_URL) throw new Error("Missing SUPABASE_URL");
 if (!process.env.SUPABASE_SERVICE_ROLE_KEY)

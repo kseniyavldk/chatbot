@@ -1,6 +1,9 @@
 "use client";
+
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface Props {
   mode: "login" | "register";
@@ -36,43 +39,64 @@ export function AuthModal({ mode, onClose, onSwitch }: Props) {
             ? "Log in to access your chats"
             : "Sign up for unlimited messages"}
         </p>
+
         <form onSubmit={handleSubmit}>
           <div className="form-field">
             <label className="form-label">Email</label>
-            <input
+            <Input
               type="email"
-              className="form-input"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoFocus
               required
+              style={{
+                background: "var(--bg-3)",
+                border: "1px solid var(--border)",
+                color: "var(--text-1)",
+              }}
             />
           </div>
           <div className="form-field">
             <label className="form-label">Password</label>
-            <input
+            <Input
               type="password"
-              className="form-input"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              style={{
+                background: "var(--bg-3)",
+                border: "1px solid var(--border)",
+                color: "var(--text-1)",
+              }}
             />
           </div>
+
           {error && <div className="form-error">{error}</div>}
-          <button type="submit" className="btn-primary" disabled={isPending}>
+
+          <Button
+            type="submit"
+            disabled={isPending}
+            style={{
+              width: "100%",
+              marginTop: "8px",
+              background: "var(--accent)",
+              color: "#fff",
+            }}
+          >
             {isPending
               ? "Please wait…"
               : mode === "login"
                 ? "Log in"
                 : "Create account"}
-          </button>
+          </Button>
         </form>
+
         <div className="modal-switch">
           {mode === "login" ? (
             <>
-              'Don't have an account?{" "}
+              Don't have an account?{" "}
               <a onClick={() => onSwitch("register")}>Sign up</a>
             </>
           ) : (
