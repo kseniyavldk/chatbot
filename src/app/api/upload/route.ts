@@ -12,11 +12,13 @@ const ALLOWED = new Set([
   "text/plain",
   "text/markdown",
 ]);
+const db = supabaseAdmin as any;
 
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
+
     if (!file) return badRequest("file is required");
     if (file.size > MAX_SIZE) return badRequest("File too large (max 10MB)");
     if (!ALLOWED.has(file.type))
@@ -29,21 +31,21 @@ export async function POST(req: NextRequest) {
     const { error: uploadError } = await supabaseAdmin.storage
       .from("attachments")
       .upload(storagePath, buffer, { contentType: file.type });
-
     if (uploadError) throw uploadError;
 
     let extractedText: string | null = null;
+
     if (file.type === "text/plain" || file.type === "text/markdown") {
       extractedText = buffer.toString("utf-8").slice(0, 100_000);
     } else if (file.type === "application/pdf") {
       try {
-        const pdfParse = (await import("pdf-parse")).default;
+        const pdfParse = (await import("pdf-parse")) as any;
         const result = await pdfParse(buffer);
         extractedText = result.text.slice(0, 100_000);
       } catch {}
     }
 
-    const { data: attachment, error: dbError } = await supabaseAdmin
+    const { data: attachment, error: dbError } = await db
       .from("attachments")
       .insert({
         message_id: null,
@@ -57,6 +59,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (dbError) throw dbError;
+
     return ok({ attachment });
   } catch (err) {
     return serverError(err);

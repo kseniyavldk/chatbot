@@ -1,6 +1,12 @@
 import { NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { notFound, serverError } from "@/lib/api-helpers";
+import { Database } from "@/types/supabase";
+
+type AttachmentRow = Pick<
+  Database["public"]["Tables"]["attachments"]["Row"],
+  "storage_path" | "mime_type" | "filename"
+>;
 
 export async function GET(
   _req: NextRequest,
@@ -8,17 +14,20 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const { data: att } = await supabaseAdmin
-      .from("attachments")
-      .select("storage_path,mime_type,filename")
-      .eq("id", id)
-      .single();
-    if (!att) return notFound();
 
-    const { data, error } = await supabaseAdmin.storage
+    const { data: att, error } = await supabaseAdmin
+      .from("attachments")
+      .select("storage_path, mime_type, filename")
+      .eq("id", id)
+      .single<AttachmentRow>();
+
+    if (error || !att) return notFound();
+
+    const { data, error: downloadError } = await supabaseAdmin.storage
       .from("attachments")
       .download(att.storage_path);
-    if (error || !data) return notFound();
+
+    if (downloadError || !data) return notFound();
 
     return new Response(await data.arrayBuffer(), {
       headers: {
