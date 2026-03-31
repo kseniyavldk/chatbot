@@ -1,8 +1,10 @@
 import { supabaseAdmin } from "@/lib/supabase/server";
 import type { Chat } from "@/types";
 
+const db = supabaseAdmin as any;
+
 export async function getChatsByUser(userId: string): Promise<Chat[]> {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await db
     .from("chats")
     .select("*")
     .eq("user_id", userId)
@@ -13,7 +15,7 @@ export async function getChatsByUser(userId: string): Promise<Chat[]> {
 }
 
 export async function getChatsBySession(sessionId: string): Promise<Chat[]> {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await db
     .from("chats")
     .select("*")
     .eq("session_id", sessionId)
@@ -24,7 +26,7 @@ export async function getChatsBySession(sessionId: string): Promise<Chat[]> {
 }
 
 export async function getChatById(id: string): Promise<Chat | null> {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await db
     .from("chats")
     .select("*")
     .eq("id", id)
@@ -42,7 +44,7 @@ export async function createChat(params: {
   sessionId?: string;
   title?: string;
 }): Promise<Chat> {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await db
     .from("chats")
     .insert({
       user_id: params.userId ?? null,
@@ -60,7 +62,7 @@ export async function updateChatTitle(
   id: string,
   title: string,
 ): Promise<Chat> {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await db
     .from("chats")
     .update({ title })
     .eq("id", id)
@@ -72,8 +74,7 @@ export async function updateChatTitle(
 }
 
 export async function deleteChat(id: string): Promise<void> {
-  const { error } = await supabaseAdmin.from("chats").delete().eq("id", id);
-
+  const { error } = await db.from("chats").delete().eq("id", id);
   if (error) throw error;
 }
 
