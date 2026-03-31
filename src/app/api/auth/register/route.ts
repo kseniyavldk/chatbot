@@ -7,20 +7,26 @@ export async function POST(req: NextRequest) {
     const { email, password } = await req.json().catch(() => ({}));
     if (!email || !password)
       return badRequest("email and password are required");
-    if (password.length < 8)
-      return badRequest("password must be at least 8 characters");
+    if (password.length < 6)
+      return badRequest("password must be at least 6 characters");
 
-    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+    const { data, error } = await supabaseAdmin.auth.signUp({
       email,
       password,
-      email_confirm: true,
     });
+
     if (error) return badRequest(error.message);
+    if (!data.user) return badRequest("Registration failed");
 
     const { data: session, error: signInErr } =
-      await supabaseAdmin.auth.signInWithPassword({ email, password });
-    if (signInErr || !session.session)
+      await supabaseAdmin.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+    if (signInErr || !session.session) {
       return badRequest("Account created but sign-in failed");
+    }
 
     const res = ok({ user: { id: data.user.id, email: data.user.email } });
     res.headers.set(
