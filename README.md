@@ -117,7 +117,7 @@ GEMINI_API_KEY=your_key
 ## 📸 Screenshots
 
 ```md
-![App Screenshot](./public/screenshot.png)
+![png1]({3CA9F6E4-3312-45EA-98C4-B84AEEFE3342}.png)
 ```
 
 ---
