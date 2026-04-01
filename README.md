@@ -1,92 +1,138 @@
-Chatbot
+# 🤖 Chatbot
 
 A fullstack ChatGPT-like chatbot application with real-time streaming responses, authentication, and persistent chat history.
 
-🚀 Live Demo
+---
 
-https://chatbot-git-main-kseniyavldks-projects.vercel.app/
+## 🚀 Live Demo
 
-⚠️ Note: The application may require a VPN to work correctly (due to LLM API availability in some regions).
+🔗 https://chatbot-git-main-kseniyavldks-projects.vercel.app/
 
-✨ Features
-💬 Chat interface with streaming AI responses
-🤖 Integration with Gemini API
-🧠 Persistent chat history (stored in database)
-📂 Left sidebar with list of chats
-🔐 User authentication
-👤 Anonymous users: up to 3 free questions
-🔄 Real-time sync between tabs
-🖼️ Image upload in chat
-📄 Document upload for contextual responses (RAG)
-⚡ Loading states and smooth UX
-🛠 Tech Stack
+> ⚠️ **Note:** The application may require a VPN due to LLM API availability in some regions.
 
-Frontend
-Next.js (App Router)
-React
-TanStack Query
-Tailwind CSS
-shadcn/ui
+---
 
-Backend
-Next.js API routes (REST API)
+## ✨ Features
 
-Database
-PostgreSQL (via Supabase)
+- 💬 Chat interface with **streaming AI responses**
+- 🤖 Integration with **Gemini API**
+- 🧠 **Persistent chat history** (stored in database)
+- 📂 Left sidebar with list of chats
+- 🔐 User authentication
+- 👤 Anonymous users: up to **3 free questions**
+- 🔄 Real-time sync between tabs
+- 🖼️ Image upload in chat
+- 📄 Document upload for contextual responses (**RAG**)
+- ⚡ Loading states and smooth UX
 
-Auth & Realtime
-Supabase Auth
-Supabase Realtime
+---
 
-Deployment
-Vercel
+## 🛠 Tech Stack
 
-🧱 Architecture
+### Frontend
 
-The project follows strict separation of concerns:
+- Next.js (App Router)
+- React
+- TanStack Query
+- Tailwind CSS
+- shadcn/ui
 
-Client → interacts only with API routes
-Server (API) → handles business logic and external APIs
-Database → accessed only via server (service role)
+### Backend
 
-No direct database calls are made from client components (including Server Components).
+- Next.js API routes (REST API)
 
-Supabase is accessed securely using a service role key.
-Public client is used only for realtime subscriptions.
+### Database
 
-🔐 Security
+- PostgreSQL (via Supabase)
 
-API keys are stored in environment variables
-No sensitive data is exposed to the client
-Anonymous usage is limited (3 free messages)
+### Auth & Realtime
 
-🔌 API Endpoints
-POST /api/chat → send message and stream response
-GET /api/chats → get user chats
-POST /api/upload → upload files
-GET /api/messages → get messages for a chat
+- Supabase Auth
+- Supabase Realtime
 
-⚙️ Getting Started
+### Deployment
 
+- Vercel
+
+---
+
+## 🧱 Architecture
+
+The project follows **strict separation of concerns**:
+
+- **Client** → interacts only with API routes
+- **Server (API)** → handles business logic and external APIs
+- **Database** → accessed only via server (service role)
+
+> ❗ No direct database calls are made from client components (including Server Components)
+
+- Supabase is accessed securely using a **service role key**
+- Public client is used only for **realtime subscriptions**
+
+---
+
+## 🔐 Security
+
+- API keys are stored in **environment variables**
+- No sensitive data is exposed to the client
+- Anonymous usage is limited (3 free messages)
+
+---
+
+## 🔌 API Endpoints
+
+| Method | Endpoint        | Description                      |
+| ------ | --------------- | -------------------------------- |
+| POST   | `/api/chat`     | Send message and stream response |
+| GET    | `/api/chats`    | Get user chats                   |
+| POST   | `/api/upload`   | Upload files                     |
+| GET    | `/api/messages` | Get messages for a chat          |
+
+---
+
+## ⚙️ Getting Started
+
+```bash
 git clone https://github.com/kseniyavldk/chatbot.git
 cd chatbot
 npm install
 npm run dev
+```
 
-🔑 Environment Variables
+---
 
-Create .env.local file:
+## 🔑 Environment Variables
 
+Create a `.env.local` file in the root:
+
+```env
 NEXT_PUBLIC_SUPABASE_URL=your_url
 SUPABASE_SERVICE_ROLE_KEY=your_service_key
 
 GEMINI_API_KEY=your_key
+```
 
-📸 Screenshots
+---
 
-![png1]({83CAFC28-4E1C-479B-90D9-0BCD14CA7B3B}.png)
+## 📸 Screenshots
 
-📌 Notes
-Project was built as a test assignment
-Focus on architecture, scalability, and clean separation of layers
-Easily extendable (multi-model support, RAG, etc.)
+```md
+![App Screenshot](./public/screenshot.png)
+```
+
+---
+
+## 📌 Notes
+
+- Project was built as a **test assignment**
+- Focus on:
+  - architecture
+  - scalability
+  - clean separation of layers
+
+- Easily extendable:
+  - multi-model support
+  - RAG improvements
+  - advanced features
+
+---
