@@ -10,17 +10,18 @@ export type Identity =
 
 export async function getIdentity(): Promise<Identity> {
   const cookieStore = await cookies();
-
   const token = cookieStore.get(AUTH_COOKIE)?.value;
 
   if (token) {
-    const {
-      data: { user },
-      error,
-    } = await supabaseAdmin.auth.getUser(token);
-    if (!error && user) {
-      return { type: "authenticated", userId: user.id, sessionId: null };
-    }
+    try {
+      const {
+        data: { user },
+        error,
+      } = await supabaseAdmin.auth.getUser(token);
+      if (!error && user) {
+        return { type: "authenticated", userId: user.id, sessionId: null };
+      }
+    } catch {}
   }
 
   const existingSession = cookieStore.get(ANON_SESSION_COOKIE)?.value;

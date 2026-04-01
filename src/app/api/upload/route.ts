@@ -11,6 +11,7 @@ const ALLOWED = new Set([
   "application/pdf",
   "text/plain",
   "text/markdown",
+  "application/octet-stream",
 ]);
 const db = supabaseAdmin as any;
 
